@@ -1,0 +1,23 @@
+.idea/
+.vscode/
+.codex/
+devmind_project_spec.md
+
+# Java
+target/
+*.log
+
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+
+# Node
+node_modules/
+dist/
+coverage/
+
+# OS
+Thumbs.db
+.DS_Store

@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: devmind-backend
+  jackson:
+    default-property-inclusion: non_null
+server:
+  port: ${BACKEND_PORT:8080}
+logging:
+  level:
+    com.devmind.backend: INFO
+devmind:
+  api-base-path: /api
