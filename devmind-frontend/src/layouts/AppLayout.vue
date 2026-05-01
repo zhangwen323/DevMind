@@ -26,6 +26,9 @@
         <el-menu-item index="/reports">
           Reports
         </el-menu-item>
+        <el-menu-item index="/admin/model-configurations">
+          Model Configuration
+        </el-menu-item>
         <el-menu-item index="/agent-traces">
           Agent Traces
         </el-menu-item>

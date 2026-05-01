@@ -8,6 +8,7 @@ import DocumentStatusPage from '../views/DocumentStatusPage.vue'
 import KnowledgeBaseDetailPage from '../views/KnowledgeBaseDetailPage.vue'
 import KnowledgeBasePage from '../views/KnowledgeBasePage.vue'
 import LoginPage from '../views/LoginPage.vue'
+import ModelConfigurationPage from '../views/ModelConfigurationPage.vue'
 import ReportDetailPage from '../views/ReportDetailPage.vue'
 import ReportGenerationPage from '../views/ReportGenerationPage.vue'
 import ReportListPage from '../views/ReportListPage.vue'
@@ -60,6 +61,11 @@ const routes = [
         path: '/reports',
         name: 'reports',
         component: ReportListPage
+      },
+      {
+        path: '/admin/model-configurations',
+        name: 'model-configurations',
+        component: ModelConfigurationPage
       },
       {
         path: '/reports/:reportId',
