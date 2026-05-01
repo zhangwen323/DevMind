@@ -12,6 +12,7 @@ public class AgentExecutionService {
             case "rag" -> "rag-agent";
             case "sql" -> "sql-agent";
             case "report" -> "report-agent";
+            case "code-analysis" -> "code-analysis-agent";
             default -> "router-agent";
         };
         boolean allowed = toolScope.startsWith(taskType) || "router-agent".equals(agentName);
@@ -52,6 +53,7 @@ public class AgentExecutionService {
             case "rag" -> "knowledge-search";
             case "sql" -> "sql-read";
             case "report" -> "report-writer";
+            case "code-analysis" -> "code-inspector";
             default -> "agent-tool";
         };
     }

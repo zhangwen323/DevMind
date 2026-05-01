@@ -17,6 +17,9 @@
         <el-menu-item index="/chat">
           Chat
         </el-menu-item>
+        <el-menu-item index="/code-analysis">
+          Code Analysis
+        </el-menu-item>
         <el-menu-item index="/agent-traces">
           Agent Traces
         </el-menu-item>

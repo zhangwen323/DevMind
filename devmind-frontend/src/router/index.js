@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AppLayout from '../layouts/AppLayout.vue'
 import AgentTracePage from '../views/AgentTracePage.vue'
 import ChatPage from '../views/ChatPage.vue'
+import CodeAnalysisPage from '../views/CodeAnalysisPage.vue'
 import DocumentStatusPage from '../views/DocumentStatusPage.vue'
 import KnowledgeBaseDetailPage from '../views/KnowledgeBaseDetailPage.vue'
 import KnowledgeBasePage from '../views/KnowledgeBasePage.vue'
@@ -41,6 +42,11 @@ const routes = [
         path: '/chat',
         name: 'chat',
         component: ChatPage
+      },
+      {
+        path: '/code-analysis',
+        name: 'code-analysis',
+        component: CodeAnalysisPage
       },
       {
         path: '/agent-traces',

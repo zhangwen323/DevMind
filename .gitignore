@@ -4,6 +4,7 @@
 *.iml
 .codex/
 devmind_project_spec.md
+AGENTS.md
 
 # Environment files
 .env
