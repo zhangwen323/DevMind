@@ -15,7 +15,10 @@ public class RagQueryService {
         );
     }
 
-    public record RagAnswer(long knowledgeBaseId, String answer, List<Reference> references) {
+    public record RagAnswer(Long sessionId, long knowledgeBaseId, String answer, List<Reference> references) {
+        public RagAnswer(long knowledgeBaseId, String answer, List<Reference> references) {
+            this(null, knowledgeBaseId, answer, references);
+        }
     }
 
     public record Reference(long documentId, String documentName, boolean traceable) {

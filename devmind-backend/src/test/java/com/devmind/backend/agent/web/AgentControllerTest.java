@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,9 +22,20 @@ class AgentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Test
-    @WithMockUser
+    @WithMockUser(username = "alice", roles = "USER")
     void shouldCreateBoundedAgentTrace() throws Exception {
+        jdbcTemplate.execute("DELETE FROM chat_messages");
+        jdbcTemplate.execute("DELETE FROM chat_sessions");
+        jdbcTemplate.execute("DELETE FROM users");
+        jdbcTemplate.update(
+            "INSERT INTO users (id, username, password_hash, role_code, status) VALUES (?, ?, ?, ?, ?)",
+            1L, "alice", "hash", "USER", "ACTIVE"
+        );
+
         mockMvc.perform(post("/api/agents/execute")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -34,6 +46,7 @@ class AgentControllerTest {
                     }
                     """))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.sessionId").exists())
             .andExpect(jsonPath("$.data.agentName").value("rag-agent"))
             .andExpect(jsonPath("$.data.allowed").value(true))
             .andExpect(jsonPath("$.data.trace.stepName").value("route"));

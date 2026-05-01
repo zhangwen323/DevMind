@@ -3,6 +3,9 @@ spring:
     name: devmind-backend
   jackson:
     default-property-inclusion: non_null
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
 server:
   port: ${BACKEND_PORT:8080}
 logging:
