@@ -8,6 +8,9 @@ import DocumentStatusPage from '../views/DocumentStatusPage.vue'
 import KnowledgeBaseDetailPage from '../views/KnowledgeBaseDetailPage.vue'
 import KnowledgeBasePage from '../views/KnowledgeBasePage.vue'
 import LoginPage from '../views/LoginPage.vue'
+import ReportDetailPage from '../views/ReportDetailPage.vue'
+import ReportGenerationPage from '../views/ReportGenerationPage.vue'
+import ReportListPage from '../views/ReportListPage.vue'
 
 const routes = [
   {
@@ -47,6 +50,21 @@ const routes = [
         path: '/code-analysis',
         name: 'code-analysis',
         component: CodeAnalysisPage
+      },
+      {
+        path: '/reports/generate',
+        name: 'report-generation',
+        component: ReportGenerationPage
+      },
+      {
+        path: '/reports',
+        name: 'reports',
+        component: ReportListPage
+      },
+      {
+        path: '/reports/:reportId',
+        name: 'report-detail',
+        component: ReportDetailPage
       },
       {
         path: '/agent-traces',

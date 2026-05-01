@@ -12,6 +12,7 @@ public class AgentExecutionService {
             case "rag" -> "rag-agent";
             case "sql" -> "sql-agent";
             case "report" -> "report-agent";
+            case "report-generation" -> "report-agent";
             case "code-analysis" -> "code-analysis-agent";
             default -> "router-agent";
         };
@@ -53,6 +54,7 @@ public class AgentExecutionService {
             case "rag" -> "knowledge-search";
             case "sql" -> "sql-read";
             case "report" -> "report-writer";
+            case "report-generation" -> "report-writer";
             case "code-analysis" -> "code-inspector";
             default -> "agent-tool";
         };

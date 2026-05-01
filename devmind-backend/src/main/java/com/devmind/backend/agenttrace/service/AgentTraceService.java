@@ -86,7 +86,7 @@ public class AgentTraceService {
     }
 
     @Transactional
-    public void recordTrace(long sessionId, long userId, String agentName, List<TraceStepInput> steps) {
+    public String recordTrace(long sessionId, long userId, String agentName, List<TraceStepInput> steps) {
         String traceKey = UUID.randomUUID().toString();
         for (TraceStepInput step : steps) {
             AgentTraceRecord record = new AgentTraceRecord();
@@ -103,6 +103,7 @@ public class AgentTraceService {
             record.setErrorMessage(step.errorMessage());
             agentTraceMapper.insert(record);
         }
+        return traceKey;
     }
 
     private AdminTraceDetail toAdminDetail(List<AgentTraceMapper.AgentTraceRow> rows) {

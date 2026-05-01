@@ -20,6 +20,12 @@
         <el-menu-item index="/code-analysis">
           Code Analysis
         </el-menu-item>
+        <el-menu-item index="/reports/generate">
+          Generate Report
+        </el-menu-item>
+        <el-menu-item index="/reports">
+          Reports
+        </el-menu-item>
         <el-menu-item index="/agent-traces">
           Agent Traces
         </el-menu-item>
