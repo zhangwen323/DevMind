@@ -150,6 +150,34 @@
           </div>
         </div>
 
+        <div
+          v-if="chatStore.activeSession?.sessionType === 'AGENT' && traceStore.sessionTraces.length"
+          class="trace-summary-section"
+        >
+          <div class="section-header">
+            <h2>Execution Summaries</h2>
+            <p class="page-subtitle">
+              Review user-visible Agent execution summaries linked to this conversation.
+            </p>
+          </div>
+
+          <button
+            v-for="trace in traceStore.sessionTraces"
+            :key="trace.traceKey"
+            class="trace-summary-card"
+            @click="traceStore.openSessionTrace(chatStore.activeSession.id, trace.traceKey)"
+          >
+            <div class="trace-summary-meta">
+              <strong>{{ trace.agentName }}</strong>
+              <span>{{ trace.status }}</span>
+            </div>
+            <div class="trace-summary-meta">
+              <span>{{ trace.traceKey }}</span>
+              <span>{{ trace.totalLatencyMs }} ms</span>
+            </div>
+          </button>
+        </div>
+
         <div class="chat-composer">
           <el-input
             v-model="chatStore.composer.message"
@@ -172,21 +200,70 @@
         </div>
       </el-card>
     </div>
+
+    <el-dialog
+      v-model="summaryVisible"
+      title="Execution Summary"
+      width="640px"
+    >
+      <div
+        v-if="traceStore.activeSessionTrace"
+        class="trace-step-list"
+      >
+        <div class="trace-summary-meta">
+          <strong>{{ traceStore.activeSessionTrace.agentName }}</strong>
+          <span>{{ traceStore.activeSessionTrace.status }} | {{ traceStore.activeSessionTrace.totalLatencyMs }} ms</span>
+        </div>
+        <article
+          v-for="step in traceStore.activeSessionTrace.steps"
+          :key="`${traceStore.activeSessionTrace.traceKey}-${step.stepName}-${step.summary}`"
+          class="trace-summary-card trace-summary-card--detail"
+        >
+          <div class="trace-summary-meta">
+            <strong>{{ step.stepName }}</strong>
+            <span>{{ step.status }} | {{ step.latencyMs }} ms</span>
+          </div>
+          <p>{{ step.summary }}</p>
+        </article>
+      </div>
+    </el-dialog>
   </section>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
+import { useAgentTraceStore } from '../stores/agentTraces'
 import { useChatSessionStore } from '../stores/chatSessions'
 
 const chatStore = useChatSessionStore()
+const traceStore = useAgentTraceStore()
+
+const summaryVisible = computed({
+  get: () => Boolean(traceStore.activeSessionTrace),
+  set: (value) => {
+    if (!value) {
+      traceStore.activeSessionTrace = null
+    }
+  }
+})
 
 onMounted(async () => {
   await chatStore.loadKnowledgeBaseOptions()
   await chatStore.loadSessions()
   chatStore.startNewSession('RAG')
 })
+
+watch(
+  () => [chatStore.activeSession?.id, chatStore.activeSession?.sessionType],
+  ([sessionId, sessionType]) => {
+    if (sessionId && sessionType === 'AGENT') {
+      traceStore.loadSessionTraces(sessionId)
+      return
+    }
+    traceStore.clearSessionTraces()
+  }
+)
 
 function refreshSessions() {
   chatStore.loadSessions()
@@ -207,3 +284,35 @@ function formatUpdated(value) {
   return value ? String(value).replace('T', ' ').slice(0, 16) : ''
 }
 </script>
+
+<style scoped lang="scss">
+.trace-summary-section,
+.trace-step-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.trace-summary-card {
+  background: #f8fafc;
+  border: 1px solid #dbe4f0;
+  border-radius: 12px;
+  cursor: pointer;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  text-align: left;
+}
+
+.trace-summary-card--detail {
+  cursor: default;
+}
+
+.trace-summary-meta,
+.section-header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+</style>
